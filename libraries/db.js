@@ -3,8 +3,10 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json())
 const knexObject = require('knex');
+const pg = require('pg');
 
 
+pg.types.setTypeParser(20, Number)
 
 const knexConfig = {
     client: 'postgresql',
