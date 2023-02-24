@@ -1,12 +1,15 @@
 const uuid = require("uuid");
 const { insertUserChoice } = require("../models/usersChoiceModel");
 
-async function postUsersChoice(req, res) {
+exports.postUsersChoice = async (req, res, next) => {
   const { userid, date, predictedteam, matchid, result } = req.body;
-  await insertUserChoice(userid, date, predictedteam, matchid, result);
-  res.json({ data: "posten user's choice" });
-}
-
-module.exports = {
-  postUsersChoice,
+  const rowFields = {
+    userid,
+    date,
+    predictedteam,
+    matchid,
+    result,
+  };
+  await insertUserChoice(rowFields);
+  res.status(201).json({ status: "success", msg: "posten user's choice" });
 };
