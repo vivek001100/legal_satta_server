@@ -1,13 +1,12 @@
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
-const authEmailModel = require("./models/authEmailmodel");
+
 
 const app = express();
 
 const routes = require("./routes");
 
-app.use(cors({ origin: "*" }));
+// app.use(cors({ origin: "*" }));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/", routes);
