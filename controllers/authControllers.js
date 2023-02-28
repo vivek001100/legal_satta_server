@@ -3,8 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { v4: uuidv4 } = require("uuid");
-
-
+const e = require("express");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -18,7 +17,7 @@ exports.signup = async (req, res, next) => {
       name,
       username,
       id,
-     password: hashPassword,
+      password: hashPassword,
       email,
     };
     const rowCount = await userModel.saveUserDetails(userDetails);
@@ -35,4 +34,41 @@ exports.signup = async (req, res, next) => {
     });
   }
  
+};
+
+exports.login = async (req, res, next) => {
+  // try {
+  const { email, password } = req.body;
+  const userResult = await userModel.getUser({ email });
+  const user = userResult[0];
+  // console.log(user);
+  if (user) {
+    const id = user.id;
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    console.log(isPasswordMatch);
+    if (isPasswordMatch) {
+      const token = jwt.sign({ id }, process.env.JWT_SECRET);
+
+      res.status(201).json({
+        status: "success",
+        token,
+      });
+    } else {
+      res.status(403).json({
+        status: "fail",
+        message: "Invalid Email or Password",
+      });
+    }
+  } else {
+    res.status(503).json({
+      status: "fail",
+      message: "Invalid Email or Password",
+    });
+  }
+  // } catch (e) {
+  //   res.status(401).json({
+  //     status: "fail",
+  //     message: "Login Failed",
+  //   });
+  // }
 };
