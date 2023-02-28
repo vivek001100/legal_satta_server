@@ -1,5 +1,5 @@
 const { knexLegalSatta: db } = require("./../libraries/psql");
 
-exports.getMatch = async (queryField) => {
+exports.getMatch =  (queryField) => {
   return db("match").select("*").where(queryField);
 };
