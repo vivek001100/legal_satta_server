@@ -1,5 +1,5 @@
 const { knexLegalSatta: db } = require("./../libraries/psql");
 
-exports.getTeamDetail=async(queryFields)=>{
-    
+exports.getTeams=async(teamIdList)=>{
+   return db("teams").select("*").whereIn('id', teamIdList);
 }

@@ -14,4 +14,12 @@ app.use("/auth", authRouter);
 app.use("/match", matchRoutes);
 app.use("/get", leaderboardRoutes);
 app.use("/postchoice", userChoiceRoutes);
-module.exports = app;
+const authRouter=require('./authRoutes')
+// const userRoutes=require('./userRoutes')
+const matchRoutes=require('./matchRoutes')
+
+app.use('/auth',authRouter)
+// app.use('/user',userRoutes)
+app.use('/match',matchRoutes)
+
+module.exports=app
