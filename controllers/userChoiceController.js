@@ -3,6 +3,7 @@ const { insertUserChoice } = require("../models/usersChoiceModel");
 
 exports.postUsersChoice = async (req, res, next) => {
   const { userid, date, predictedteam, matchid, result } = req.body;
+  console.log(userid, date, predictedteam, matchid, result)
   const rowFields = {
     userid,
     date,

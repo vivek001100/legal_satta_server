@@ -1,19 +1,23 @@
 const matchModel = require("./../models/matchModel");
 
-exports.getTodayMatchDetail = async (req, res, next) => {
-  const d = new Date();
-  let day = d.getDate();
-  let month = d.getMonth();
-  let year = d.getFullYear();
-
-  const todayDate = {
-    date: `${day}-${month + 1}-${year}`,
-  };
-  console.log(todayDate);
-  const todayMatch = await matchModel.selectTodayMatch(todayDate);
+exports.getLatestMatch = async (req, res, next) => {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  let queryField;
+  if (month < 10) {
+    queryField = {
+      date: `${date.getDate()}-0${month}-${date.getFullYear()}`,
+    };
+  } else {
+    queryField = {
+      date: `${date.getDate()}-${month}-${date.getFullYear()}`,
+    };
+  }
+  console.log(queryField);
+  const todayMatch = await matchModel.getMatch(queryField);
 
   res.status(200).json({
     status: "success",
-    match: todayMatch,
+    result: todayMatch,
   });
 };

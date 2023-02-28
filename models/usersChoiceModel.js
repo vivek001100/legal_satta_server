@@ -2,7 +2,6 @@ const knex = require("../libraries/db");
 
 exports.insertUserChoice = (rowFields) => {
  return knex("users_prediction")
-    .returning("*")
     .insert(rowFields)
-    .then((rows) => rows[0]);
+    .then((result) => result.rowCount);
 };
