@@ -1,14 +1,15 @@
 const { knexLegalSatta: db } = require("./../libraries/psql");
 
-exports.saveUserDetails =  (rowFields) => {
+exports.saveUserDetails = (rowFields) => {
   return db("users")
     .insert(rowFields)
     .then((result) => result.rowCount);
 };
 
-exports.isUserExist =  (username) => {
+exports.getUser = (queryField) => {
   return db("users")
-    .select("username")
-    .where({ username })
-    .then((result) => result.length !== 0);
+    .select("*")
+    .where(queryField)
+    .then((result) => result)
+    .catch((e) => null);
 };
