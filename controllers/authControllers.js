@@ -36,7 +36,7 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  // try {
+  try {
   const { email, password } = req.body;
   const userResult = await userModel.getUser({ email });
   const user = userResult[0];
@@ -64,10 +64,10 @@ exports.login = async (req, res, next) => {
       message: "Invalid Email or Password",
     });
   }
-  // } catch (e) {
-  //   res.status(401).json({
-  //     status: "fail",
-  //     message: "Login Failed",
-  //   });
-  // }
+  } catch (e) {
+    res.status(401).json({
+      status: "fail",
+      message: "Login Failed",
+    });
+  }
 };
