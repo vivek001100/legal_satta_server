@@ -25,7 +25,12 @@ exports.signup = async (req, res, next) => {
     if (rowCount) {
       res.status(201).json({
         status: "success",
-        token,
+        user: {
+          username,
+          email,
+          score: 0,
+          token,
+        },
       });
     }
   } catch (e) {
