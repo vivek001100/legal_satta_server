@@ -13,3 +13,10 @@ exports.getUser = (queryField) => {
     .then((result) => result)
     .catch((e) => null);
 };
+
+exports.insertUserChoice = (rowFields) => {
+  return knex("users_prediction")
+     .insert(rowFields)
+     .then((result) => result.rowCount);
+ };
+ 

@@ -1,14 +1,31 @@
-const userModel=require('./../models/userModel');
+const uuid = require("uuid");
+const { insertUserChoice } = require("../models/userModel");
 
-exports.checkUserNameAvailable=async(req,res,next)=>{
-    const username=req.params.username;
-    const isUserExist=await userModel.isUserExist(username);
-    res.status(200).json({
-        status:"success",
-        isAvailable:!isUserExist
+exports.postUsersChoice = async (req, res, next) => {
+  const thisDay = new Date();
+  const time = thisDay.getHours() + thisDay.getMinutes() / 60;
+
+  if (time < 16.5) {
+    const { userid, date, predictedteam, matchid, result } = req.body;
+    console.log(userid, date, predictedteam, matchid, result);
+    const rowFields = {
+      userid,
+      date,
+      predictedteam,
+      matchid,
+      result,
+    };
+    const rowCount = await insertUserChoice(rowFields);
+
+    if (rowCount) {
+      res.status(201).json({ status: "success", predictedteam: predictedteam });
+    } else {
+      res.status(501).json({ status: "fail", message: "server fail" });
+    }
+  } else {
+    res.status(404).json({
+      status: "fail",
+      message: "Prediction not allowed after 4:30 PM",
     });
-
-
-
-}
-
+  }
+};
