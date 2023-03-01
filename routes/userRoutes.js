@@ -1,7 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const userController = require("./../controllers/userController");
+const express = require('express');
+const routes = express.Router();
+const userController =require('../controllers/userController')
 
 
-router.get('/user-exist/:username',userController.checkUserNameAvailable)
-module.exports = router;
+routes.post('/predict',userController.postUsersChoice)
+
+module.exports=routes

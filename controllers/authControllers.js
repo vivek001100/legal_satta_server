@@ -37,33 +37,34 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-  const { email, password } = req.body;
-  const userResult = await userModel.getUser({ email });
-  const user = userResult[0];
-  // console.log(user);
-  if (user) {
-    const id = user.id;
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    console.log(isPasswordMatch);
-    if (isPasswordMatch) {
-      const token = jwt.sign({ id }, process.env.JWT_SECRET);
+    const { email, password } = req.body;
+    console.log(email);
+    const userResult = await userModel.getUser({ email });
+    const user = userResult[0];
+    if (user) {
+      const id = user.id;
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      console.log(isPasswordMatch);
+      
+      if (isPasswordMatch) {
+        const token = jwt.sign({ id }, process.env.JWT_SECRET);
 
-      res.status(201).json({
-        status: "success",
-        token,
-      });
+        res.status(201).json({
+          status: "success",
+          token,
+        });
+      } else {
+        res.status(403).json({
+          status: "fail",
+          message: "Invalid Email or Password",
+        });
+      }
     } else {
-      res.status(403).json({
+      res.status(503).json({
         status: "fail",
         message: "Invalid Email or Password",
       });
     }
-  } else {
-    res.status(503).json({
-      status: "fail",
-      message: "Invalid Email or Password",
-    });
-  }
   } catch (e) {
     res.status(401).json({
       status: "fail",
