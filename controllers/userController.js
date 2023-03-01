@@ -1,11 +1,18 @@
 const uuid = require("uuid");
 const userModel = require("../models/userModel");
-const userPredictionModel = require("../models/userModel");
+const userPredictionModel = require("../models/userPredicationModel");
 
 exports.postUsersChoice = async (req, res, next) => {
   const thisDay = new Date();
   const time = thisDay.getHours() + thisDay.getMinutes() / 60;
 
+  var startOfDay = new Date(
+    thisDay.getFullYear(),
+    thisDay.getMonth(),
+    thisDay.getDate()
+  );
+  const date = startOfDay / 1000;
+  console.log(time);
   if (time < 16.5) {
     const { userid, predictedteam, matchid, result } = req.body;
     console.log(userid, date, predictedteam, matchid, result);
@@ -31,7 +38,4 @@ exports.postUsersChoice = async (req, res, next) => {
   }
 };
 
-exports.getUsersChoice = async (req, res, next) => {
-    
-}
-
+exports.getUsersChoice = async (req, res, next) => {};

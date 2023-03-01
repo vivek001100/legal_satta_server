@@ -1,6 +1,7 @@
 const matchModel = require("./../models/matchModel");
 const teamModel = require("./../models/teamModel");
 const userPredictionModel = require("./../models/userPredicationModel");
+const userModel = require("./../models/userModel");
 
 exports.getLatestMatch = async (req, res, next) => {
   const now = new Date();
@@ -95,11 +96,20 @@ exports.decideWinner = async (req, res, next) => {
 
   winnerTeamId = req.body.winnerId;
 
-  //   await matchModel.updateWinner(timeStamp, winnerTeamId);
-  const prediction = await userPredictionModel.getd();
-  console.log(prediction);
+  await matchModel.updateWinner(timeStamp, winnerTeamId);
+  await userPredictionModel.setFalsePrediction(winnerTeamId);
+  const winningUsers = await userPredictionModel.setTruePrediction(
+    winnerTeamId
+  );
+  const idList = [];
+
+  winningUsers.forEach((el) => {
+    idList.push(el.userid);
+  });
+  await userModel.setScore(idList);
+  
   res.status(201).json({
     status: "success",
-    message: prediction,
+    message: "prediction",
   });
 };

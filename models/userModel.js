@@ -14,3 +14,7 @@ exports.getUser = (queryField) => {
     .then((result) => result)
     .catch((e) => null);
 };
+
+exports.setScore=(idList)=>{
+  return db("users").whereIn("id", idList).increment("score",10);
+}
