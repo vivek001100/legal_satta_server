@@ -1,5 +1,6 @@
 const uuid = require("uuid");
 const userModel = require("../models/userModel");
+const userPredictionModel = require("../models/userModel");
 
 exports.postUsersChoice = async (req, res, next) => {
   const thisDay = new Date();
@@ -15,7 +16,7 @@ exports.postUsersChoice = async (req, res, next) => {
       matchid,
       result,
     };
-    const rowCount = await userModel.insertUserChoice(rowFields);
+    const rowCount = await userPredictionModel.insertUserChoice(rowFields);
 
     if (rowCount) {
       res.status(201).json({ status: "success", predictedteam: predictedteam });
