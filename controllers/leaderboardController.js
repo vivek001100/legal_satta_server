@@ -1,5 +1,6 @@
 const leaderboardModel = require("./../models/leaderboardModel");
 const matchModel = require("./../models/matchModel");
+const teamModel=require('./../models/teamModel')
 
 exports.getLeaderboards = async (req, res, next) => {
   const leaderboard = await leaderboardModel.getLeaderboard();
@@ -11,6 +12,7 @@ exports.getLeaderboards = async (req, res, next) => {
 
   teamIdList.push(team1Id);
   teamIdList.push(team2Id);
+  const teamIdList=[]
 
   const teams = await teamModel.getTeams(teamIdList);
 
