@@ -1,12 +1,12 @@
 const matchModel = require("./../models/matchModel");
 const teamModel = require("./../models/teamModel");
+const userPredictionModel = require("./../models/userPredicationModel");
 
 exports.getLatestMatch = async (req, res, next) => {
-  const diff = 19800;
   const now = new Date();
 
   var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const timeStamp = startOfDay / 1000 + diff;
+  const timeStamp = startOfDay / 1000;
   console.log(timeStamp);
 
   const teamIdList = [];
@@ -32,11 +32,10 @@ exports.getLatestMatch = async (req, res, next) => {
 };
 
 exports.getUpcomingMatch = async (req, res, next) => {
-  const diff = 19800;
   const now = new Date();
 
   var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const timeStamp = startOfDay / 1000 + diff;
+  const timeStamp = startOfDay / 1000;
 
   const upcommingMatch = await matchModel.getUpcomingMatches(timeStamp);
   const teamObject = {};
@@ -88,18 +87,19 @@ exports.getMatchByDate = async (req, res, next) => {
 };
 
 exports.decideWinner = async (req, res, next) => {
-  const diff = 19800;
   const now = new Date();
 
   var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const timeStamp = startOfDay / 1000 + diff;
+  const timeStamp = startOfDay / 1000;
   console.log(timeStamp);
 
   winnerTeamId = req.body.winnerId;
 
-  await matchModel.updateWinner(timeStamp, winnerTeamId);
+  //   await matchModel.updateWinner(timeStamp, winnerTeamId);
+  const prediction = await userPredictionModel.getd();
+  console.log(prediction);
   res.status(201).json({
     status: "success",
-    message: "winner decided",
+    message: prediction,
   });
 };
