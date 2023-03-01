@@ -1,3 +1,4 @@
+
 const { knexLegalSatta: db } = require("./../libraries/psql");
 
 exports.saveUserDetails = (rowFields) => {
@@ -15,8 +16,15 @@ exports.getUser = (queryField) => {
 };
 
 exports.insertUserChoice = (rowFields) => {
-  return knex("users_prediction")
+  return db("users_prediction")
      .insert(rowFields)
      .then((result) => result.rowCount);
  };
+
+ exports.getUsersChoice = () => {
+  return db("users_prediction")
+     .select("*")
+     .then((result) => result)
+     .catch((e) => null);
+ }
  
