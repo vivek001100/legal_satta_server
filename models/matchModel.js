@@ -8,7 +8,7 @@ exports.getUpcomingMatches = (queryfield) => {
   return db("match").select("*").where("date", ">", queryfield);
 };
 
-exports.getPlayedMatches = (queryField) => {
+exports.getLastPlayedMatch = () => {
   return db("match")
     .select("*")
     .whereNotNull("winner")
