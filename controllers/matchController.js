@@ -2,12 +2,12 @@ const matchModel = require("./../models/matchModel");
 const teamModel = require("./../models/teamModel");
 
 exports.getLatestMatch = async (req, res, next) => {
-  const diff = 19800;
+  
   const now = new Date();
 
   var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const timeStamp = startOfDay / 1000 + diff;
-//   console.log(timeStamp);
+  const timeStamp = startOfDay / 1000;
+  //   console.log(timeStamp);
 
   const teamIdList = [];
 

@@ -6,7 +6,7 @@ exports.postUsersChoice = async (req, res, next) => {
   const time = thisDay.getHours() + thisDay.getMinutes() / 60;
 
   if (time < 16.5) {
-    const { userid, date, predictedteam, matchid, result } = req.body;
+    const { userid, predictedteam, matchid, result } = req.body;
     console.log(userid, date, predictedteam, matchid, result);
     const rowFields = {
       userid,
