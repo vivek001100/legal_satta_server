@@ -38,4 +38,10 @@ exports.postUsersChoice = async (req, res, next) => {
   }
 };
 
-exports.getUsersChoice = async (req, res, next) => {};
+exports.getUsersPredictions = async (req, res, next) => {
+   const userId=req.body.userId;
+    const totalPredictions = await userPredictionModel.getTotalPredictions(userId)
+    let falsePredictions = await userPredictionModel.getFalsePredictions(userId)
+    let truePredictions = await userPredictionModel.getTruePredictions(userId)
+    
+}

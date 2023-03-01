@@ -16,5 +16,21 @@ exports.getUser = (queryField) => {
 };
 
 exports.setScore=(idList)=>{
-  return db("users").whereIn("id", idList).increment("score",10);
+  return db("users").whereIn("id", idList).increment("score",10);}
+  
+exports.getTotalPredictions = (queryField) => {
+  return db("users_prediction")
+  .count(queryField).whereNotNull("result");
+}
+
+// exports.getFalsePredictions = (queryField) =>{
+//   return db("users_prediction")
+//   .count(queryField)
+//   .where('result',false);
+// }
+
+exports.getTruePredictions = (queryField) =>{
+  return db("users_prediction")
+  .count(queryField)
+  .where('result',true);
 }
