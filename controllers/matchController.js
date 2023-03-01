@@ -31,47 +31,44 @@ exports.getLatestMatch = async (req, res, next) => {
   });
 };
 
-
-
 exports.getUpcomingMatch = async (req, res, next) => {
-    const diff = 19800;
-    const now = new Date();
-    
-    var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const timeStamp = startOfDay / 1000 + diff;
-    
-    const upcommingMatch = await matchModel.getUpcomingMatches(timeStamp);
-    const teamObject = {};
-    
-    upcommingMatch.forEach((element) => {
-        const id1 = element.team1;
-        const id2 = element.team2;
-        teamObject[`${id1}`] = 1;
-        teamObject[`${id2}`] = 1;
-    });
-    const teamList = Object.keys(teamObject);
-    const teams = await teamModel.getTeams(teamList);
-    
-    upcommingMatch.forEach((element) => {
-        element.team1 = teams.filter((e) => e.id === element.team1)[0];
-        element.team2 = teams.filter((e) => e.id === element.team2)[0];
-    });
-    
-    //   console.log(upcommingMatch);
-    
-    res.status(200).json({
-        status: "success",
-        result: upcommingMatch,
-    });
+  const diff = 19800;
+  const now = new Date();
+
+  var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const timeStamp = startOfDay / 1000 + diff;
+
+  const upcommingMatch = await matchModel.getUpcomingMatches(timeStamp);
+  const teamObject = {};
+
+  upcommingMatch.forEach((element) => {
+    const id1 = element.team1;
+    const id2 = element.team2;
+    teamObject[`${id1}`] = 1;
+    teamObject[`${id2}`] = 1;
+  });
+  const teamList = Object.keys(teamObject);
+  const teams = await teamModel.getTeams(teamList);
+
+  upcommingMatch.forEach((element) => {
+    element.team1 = teams.filter((e) => e.id === element.team1)[0];
+    element.team2 = teams.filter((e) => e.id === element.team2)[0];
+  });
+
+  //   console.log(upcommingMatch);
+
+  res.status(200).json({
+    status: "success",
+    result: upcommingMatch,
+  });
 };
 
 exports.getMatchByDate = async (req, res, next) => {
-    
-    date= req.body.date;
-    const teamIdList = [];
+  date = req.body.date;
+  const teamIdList = [];
 
   // console.log(queryField)
-  const matchOnDate = (await matchModel.getMatch({ date}))[0];
+  const matchOnDate = (await matchModel.getMatch({ date }))[0];
   // console.log(todayMatch)
   const team1Id = matchOnDate.team1;
   const team2Id = matchOnDate.team2;
@@ -88,4 +85,4 @@ exports.getMatchByDate = async (req, res, next) => {
     status: "success",
     result: matchOnDate,
   });
-}
+};
