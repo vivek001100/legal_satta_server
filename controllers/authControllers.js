@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const { v4: uuidv4 } = require("uuid");
 const e = require("express");
+const { use } = require("../routes");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -45,13 +46,14 @@ exports.login = async (req, res, next) => {
       const id = user.id;
       const isPasswordMatch = await bcrypt.compare(password, user.password);
       console.log(isPasswordMatch);
-      
+
       if (isPasswordMatch) {
         const token = jwt.sign({ id }, process.env.JWT_SECRET);
-
+        user.token = token;
+        delete user.password;
         res.status(201).json({
           status: "success",
-          token,
+          user,
         });
       } else {
         res.status(403).json({
@@ -71,4 +73,21 @@ exports.login = async (req, res, next) => {
       message: "Login Failed",
     });
   }
+};
+
+exports.verifyToken = async (req, res, next) => {
+  const token = req.body.token;
+
+  const decoded = jwt.decode(token, process.env.JWT_SECRET);
+  const id = decoded.id;
+
+  const userResult = await userModel.getUser({ id: id });
+  const user = userResult[0];
+  user.token = token;
+  delete user.password;
+
+  res.status(200).json({
+    status: "success",
+    user,
+  });
 };
