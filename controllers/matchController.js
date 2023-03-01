@@ -86,3 +86,20 @@ exports.getMatchByDate = async (req, res, next) => {
     result: matchOnDate,
   });
 };
+
+exports.decideWinner = async (req, res, next) => {
+  const diff = 19800;
+  const now = new Date();
+
+  var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const timeStamp = startOfDay / 1000 + diff;
+  console.log(timeStamp);
+
+  winnerTeamId = req.body.winnerId;
+
+  await matchModel.updateWinner(timeStamp, winnerTeamId);
+  res.status(201).json({
+    status: "success",
+    message: "winner decided",
+  });
+};
