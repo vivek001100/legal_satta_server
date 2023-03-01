@@ -29,3 +29,8 @@ exports.postUsersChoice = async (req, res, next) => {
     });
   }
 };
+
+exports.getUsersChoice = async (req, res, next) => {
+    
+}
+

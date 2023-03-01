@@ -7,7 +7,7 @@ exports.getLatestMatch = async (req, res, next) => {
 
   var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const timeStamp = startOfDay / 1000 + diff;
-  console.log(timeStamp);
+//   console.log(timeStamp);
 
   const teamIdList = [];
 

@@ -21,9 +21,10 @@ exports.insertUserChoice = (rowFields) => {
      .then((result) => result.rowCount);
  };
 
- exports.getUsersChoice = () => {
+ exports.getUsersChoice = (queryField) => {
   return db("users_prediction")
      .select("*")
+     .where(queryField)
      .then((result) => result)
      .catch((e) => null);
  }
