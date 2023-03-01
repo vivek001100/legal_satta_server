@@ -15,3 +15,7 @@ exports.getLastPlayedMatch = () => {
     .orderBy("date", "desc")
     .limit(1);
 };
+
+exports.updateWinner = (date, winner) => {
+  return db("match").where({ date }).update({ winner });
+};
