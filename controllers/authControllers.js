@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const { v4: uuidv4 } = require("uuid");
 const e = require("express");
-const { use } = require("../routes");
 
 exports.signup = async (req, res, next) => {
   try {

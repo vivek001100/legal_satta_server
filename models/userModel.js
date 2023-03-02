@@ -9,7 +9,7 @@ exports.saveUserDetails = (rowFields) => {
 
 exports.getUser = (queryField) => {
   return db("users")
-    .select("email","username","score","password")
+    .select("email","username","score","password","id")
     .where(queryField)
     .then((result) => result)
     .catch((e) => null);
