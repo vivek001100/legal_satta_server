@@ -28,6 +28,7 @@ exports.signup = async (req, res, next) => {
         user: {
           username,
           email,
+          id,
           score: 0,
           token,
         },
