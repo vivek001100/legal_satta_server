@@ -24,7 +24,12 @@ exports.signup = async (req, res, next) => {
     if (rowCount) {
       res.status(201).json({
         status: "success",
-        token,
+        user: {
+          username,
+          email,
+          score: 0,
+          token,
+        },
       });
     }
   } catch (e) {
@@ -44,12 +49,13 @@ exports.login = async (req, res, next) => {
     if (user) {
       const id = user.id;
       const isPasswordMatch = await bcrypt.compare(password, user.password);
+      delete user.password;
+
       console.log(isPasswordMatch);
 
       if (isPasswordMatch) {
         const token = jwt.sign({ id }, process.env.JWT_SECRET);
         user.token = token;
-        delete user.password;
         res.status(201).json({
           status: "success",
           user,
@@ -77,13 +83,16 @@ exports.login = async (req, res, next) => {
 exports.verifyToken = async (req, res, next) => {
   const token = req.body.token;
 
-  const decoded = jwt.decode(token, process.env.JWT_SECRET);
+  const decoded = jwt.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc2ODY4ODR9.yqWhHuOUhNoctWwPTlgnpwDQhNTCQyrXB3TzS43Ee5I", process.env.JWT_SECRET);
+  console.log(decoded);
   const id = decoded.id;
 
   const userResult = await userModel.getUser({ id: id });
+  console.log(userResult);
   const user = userResult[0];
-  user.token = token;
   delete user.password;
+  
+  user.token = token;
 
   res.status(200).json({
     status: "success",
