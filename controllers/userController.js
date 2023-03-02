@@ -39,7 +39,8 @@ exports.postUsersChoice = async (req, res, next) => {
 };
 
 exports.getUsersPredictions = async (req, res, next) => {
-  const userId = req.body.userid;
+  const userId = req.body.id;
+//   console.log(req.body)
   const totalPredictions = await userPredictionModel.getTotalPredictions(
     userId
   );
@@ -53,7 +54,29 @@ exports.getUsersPredictions = async (req, res, next) => {
     result: {
       total: totalPredictions[0].count,
       win: winningPredictions[0].count,
-      notWin: totalPredictions[0].count - winningPredictions[0].count,
     },
   });
 };
+
+// exports.getTotalPredictionResultsOfMatch = async (req, res, next) => {
+//   const thisDay = new Date();  
+//   var startOfDay = new Date(
+//     thisDay.getFullYear(),
+//     thisDay.getMonth(),
+//     thisDay.getDate()
+//   );
+//   const date = startOfDay / 1000;
+
+//   const totalBetters = await userPredictionModel.getAllBetters(date);
+//   const winners = await userPredictionModel.getAllWinners(date);
+
+//   console.log(totalBetters[0].count);
+//   res.status(200).json({
+//     status: "success",
+//     result: {
+//       total: totalBetters[0].count,
+//       winners: winners[0].count,
+//       losers: totalBetters[0].count - winners[0].count
+//     },
+//   });
+// };

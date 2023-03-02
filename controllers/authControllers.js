@@ -5,10 +5,12 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const e = require("express");
 
+const JWT_SECRET = "THIS-IS-JWT_SECRET-KEY-VIVEKPSA";
+
 exports.signup = async (req, res, next) => {
   try {
     const id = uuidv4();
-    const token = jwt.sign({ id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id }, JWT_SECRET);
 
     const { email, name, username, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 12);
@@ -28,6 +30,7 @@ exports.signup = async (req, res, next) => {
           username,
           email,
           score: 0,
+          id,
           token,
         },
       });
@@ -54,7 +57,7 @@ exports.login = async (req, res, next) => {
       console.log(isPasswordMatch);
 
       if (isPasswordMatch) {
-        const token = jwt.sign({ id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id }, JWT_SECRET);
         user.token = token;
         res.status(201).json({
           status: "success",
@@ -83,7 +86,7 @@ exports.login = async (req, res, next) => {
 exports.verifyToken = async (req, res, next) => {
   const token = req.body.token;
 
-  const decoded = jwt.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzc2ODY4ODR9.yqWhHuOUhNoctWwPTlgnpwDQhNTCQyrXB3TzS43Ee5I", process.env.JWT_SECRET);
+  const decoded = jwt.decode(token, JWT_SECRET);
   console.log(decoded);
   const id = decoded.id;
 
@@ -91,7 +94,7 @@ exports.verifyToken = async (req, res, next) => {
   console.log(userResult);
   const user = userResult[0];
   delete user.password;
-  
+
   user.token = token;
 
   res.status(200).json({
