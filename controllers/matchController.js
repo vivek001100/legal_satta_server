@@ -15,8 +15,7 @@ exports.getLatestMatch = async (req, res, next) => {
   // console.log(queryField)
   const todayMatch = (await matchModel.getMatch({ date: timeStamp }))[0];
   // console.log(todayMatch)
-  const team1Id = todayMatch.team1;
-  const team2Id = todayMatch.team2;
+  const {team1Id,team2Id} = todayMatch
 
   teamIdList.push(team1Id);
   teamIdList.push(team2Id);

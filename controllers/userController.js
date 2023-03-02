@@ -1,6 +1,8 @@
 const uuid = require("uuid");
 const userModel = require("../models/userModel");
 const userPredictionModel = require("../models/userPredicationModel");
+const matchModel = require("./../models/matchModel");
+const teamModel = require("./../models/teamModel");
 
 exports.postUsersChoice = async (req, res, next) => {
   const thisDay = new Date();
@@ -40,21 +42,36 @@ exports.postUsersChoice = async (req, res, next) => {
 
 exports.getUsersPredictions = async (req, res, next) => {
   const userId = req.body.id;
-//   console.log(req.body)
-  const totalPredictions = await userPredictionModel.getTotalPredictions(
-    userId
-  );
-  const winningPredictions = await userPredictionModel.getTruePredictions(
-    userId
-  );
 
-  console.log(totalPredictions[0].count);
+  const predictions = await userPredictionModel.getTotalPredictions;
+
+  for (var i = 0; i < predictions.length; i++) {
+    const teamIdList = [];
+    const { matchid, predictedteam } = predictions[i];
+    const match = (await matchModel.getMatch({ date: timeStamp }))[0];
+    const { team1Id, team2Id } = match;
+
+    teamIdList.push(team1Id);
+    teamIdList.push(team2Id);
+
+    const teams = await teamModel.getTeams(teamIdList);
+
+    match.team1Img = teams.filter((e) => e.id === team1Id)[0].coverimg;
+    match.team2Img = teams.filter((e) => e.id === team2Id)[0].coverimg;
+    predictions.match=match
+  }
+
+  // const totalPredictions = await userPredictionModel.getTotalPredictions(
+  //   userId
+  // );
+  // const winningPredictions = await userPredictionModel.getTruePredictions(
+  //   userId
+  // );
+
+  // console.log(totalPredictions[0].count);
   res.status(200).json({
     status: "success",
-    result: {
-      total: totalPredictions[0].count,
-      win: winningPredictions[0].count,
-    },
+    result:predictions
   });
 };
 
