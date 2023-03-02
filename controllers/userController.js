@@ -39,9 +39,21 @@ exports.postUsersChoice = async (req, res, next) => {
 };
 
 exports.getUsersPredictions = async (req, res, next) => {
-   const userId=req.body.userId;
-    const totalPredictions = await userPredictionModel.getTotalPredictions(userId)
-    let falsePredictions = await userPredictionModel.getFalsePredictions(userId)
-    let truePredictions = await userPredictionModel.getTruePredictions(userId)
-    
-}
+  const userId = req.body.userid;
+  const totalPredictions = await userPredictionModel.getTotalPredictions(
+    userId
+  );
+  const winningPredictions = await userPredictionModel.getTruePredictions(
+    userId
+  );
+
+  console.log(totalPredictions[0].count);
+  res.status(200).json({
+    status: "success",
+    result: {
+      total: totalPredictions[0].count,
+      win: winningPredictions[0].count,
+      notWin: totalPredictions[0].count - winningPredictions[0].count,
+    },
+  });
+};

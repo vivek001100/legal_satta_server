@@ -13,9 +13,20 @@ exports.setTruePrediction = (winnerId) => {
     .returning("*");
 };
 
-exports.setFalsePrediction = (winnerId) => {
+// exports.setFalsePrediction = (winnerId) => {
+//   return db("users_prediction")
+//     .where("result", null)
+//     .whereNot("predictedteam", winnerId)
+//     .update({ result: false });
+// };
+
+exports.getTotalPredictions = (userid) => {
   return db("users_prediction")
-    .where("result", null)
-    .whereNot("predictedteam", winnerId)
-    .update({ result: false });
+    .count("userid")
+    .whereNotNull("result")
+    .where({ userid });
+};
+
+exports.getTruePredictions = (userid) => {
+  return db("users_prediction").count("userid").where({ userid, result: true });
 };

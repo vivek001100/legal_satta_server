@@ -107,7 +107,7 @@ exports.decideWinner = async (req, res, next) => {
     idList.push(el.userid);
   });
   await userModel.setScore(idList);
-  
+
   res.status(201).json({
     status: "success",
     message: "prediction",
